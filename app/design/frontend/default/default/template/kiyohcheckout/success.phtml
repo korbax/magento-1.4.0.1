@@ -1,0 +1,211 @@
+<?php
+
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+ /***************connect***************/
+ /**
+ 	*getting database connection instance
+ */
+$kiyoh_read = Mage::getSingleton('core/resource')->getConnection('core_read');
+ /**
+ 	*getting database connection instance
+ */
+ /**
+	 *Getting table prefix
+	 *Of database
+ */
+$kiyoh_tablePrefix = 	Mage::getConfig()->getTablePrefix();
+ /**
+	 *Getting table prefix
+	 *Of database
+ */
+
+if (Mage::isInstalled() && Mage::getSingleton('customer/session')->isLoggedIn()) {
+                $this->_data['email'] = $this->__($this->htmlEscape(Mage::getSingleton('customer/session')->getCustomer()->getEmail()));
+            } 
+			$email =    $this->_data['email'];
+
+/**
+*Support to multidomain code
+*Start to multidomain
+*/	
+$kiyoh_multicount = 'false';
+/*$_SERVER['MAGE_RUN_CODE'] = 'domain1_com';
+ $_SERVER['MAGE_RUN_TYPE'] = 'website';
+*/
+
+if(!isset($_SERVER['MAGE_RUN_CODE']) && !isset($_SERVER['MAGE_RUN_TYPE']))	
+{		
+		 $kiyoh_eventval = Mage::getStoreConfig('customconfig/review_group/custom_event');	
+    	 $kiyoh_status = Mage::getStoreConfig('customconfig/review_group/custom_enable');
+}
+else
+{
+if($_SERVER['MAGE_RUN_TYPE'] == 'website')
+{
+
+$kiyoh_results = $kiyoh_read->fetchAll("SELECT website_id FROM ".$kiyoh_tablePrefix."core_website where code = '".$_SERVER['MAGE_RUN_CODE']."'");
+$kiyoh_websiteId = $kiyoh_results[0]['website_id'];
+$scope = 'websites';
+$kiyoh_multicount = 'true';
+}
+if($_SERVER['MAGE_RUN_TYPE'] == 'store')
+{
+$kiyoh_results = $kiyoh_read->fetchAll("SELECT store_id FROM ".$kiyoh_tablePrefix."core_store where code = '".$_SERVER['MAGE_RUN_CODE']."'");
+$kiyoh_websiteId = $kiyoh_results[0]['store_id'];
+$scope = 'stores';
+$kiyoh_multicount = 'true';
+}
+}
+
+/**
+*Block To Find kiyoh setting for present store
+*/
+
+if($kiyoh_multicount == 'true')
+{
+ $kiyoh_findTocoreconfig = $kiyoh_read->fetchAll("SELECT * FROM ".$kiyoh_tablePrefix."core_config_data where scope=".$scope." AND scope_id = ".$kiyoh_websiteId);
+	foreach($kiyoh_findTocoreconfig as $value)
+		{
+		if($value['path'] ==  	'customconfig/review_group/custom_enable')
+		{
+		$kiyoh_status = $value['value']; 
+		}
+		if($value['path'] ==  	'customconfig/review_group/custom_connector')
+		{
+		$kiyoh_connector = $value['value']; 
+		}
+		if($value['path'] ==  	'customconfig/review_group/custom_action')
+		{
+		$kiyoh_action = $value['value']; 
+		}
+		if($value['path'] ==  	'customconfig/review_group/custom_user')
+		{
+		$kiyoh_user = $value['value']; 
+		}
+		if($value['path'] ==  	'customconfig/review_group/custom_delay')
+		{
+		$kiyoh_delay = $value['value']; 
+		}
+		if($value['path'] ==  	'customconfig/review_group/custom_event')
+		{
+		$kiyoh_eventval = $value['value']; 
+		}
+		}
+}
+if(!isset($kiyoh_connector))
+{
+$kiyoh_connector = Mage::getStoreConfig('customconfig/review_group/custom_connector');
+}
+if(!isset($kiyoh_action))
+{
+$kiyoh_action = Mage::getStoreConfig('customconfig/review_group/custom_action');
+}
+if(!isset($kiyoh_user))
+{
+$kiyoh_user = Mage::getStoreConfig('customconfig/review_group/custom_user');
+}
+if(!isset($kiyoh_delay))
+{
+$kiyoh_delay = Mage::getStoreConfig('customconfig/review_group/custom_delay');
+}
+if(!isset($kiyoh_eventval))
+{
+$kiyoh_eventval = Mage::getStoreConfig('customconfig/review_group/custom_event');
+}
+if(!isset($kiyoh_status))
+{
+$kiyoh_status = Mage::getStoreConfig('customconfig/review_group/custom_enable');
+}
+
+/**
+*Block To Find kiyoh setting for present store
+*/
+if($kiyoh_eventval == 'Purchase' && $kiyoh_status == '1')
+{
+
+////call url
+	
+			 // create a new cURL resource
+			
+	
+// Create a curl handle
+
+/**
+*Find Guest Email address
+*/
+if($email == '')
+{
+$_customerId = Mage::getSingleton('customer/session')->getCustomerId();
+    $customer = Mage::getSingleton('customer/session')->getCustomer();
+    $lastOrderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+    $order = Mage::getSingleton('sales/order');
+    $order->load($lastOrderId);
+    $_totalData = $order->getData();
+    $_details = $customer->getData();
+	$orderId = $_totalData['increment_id'];
+    $email = $_totalData['customer_email'];   //Retrieves guest e-mail
+// $name = $order->getBillingAddress()->getName();    //Retrieves guest name 
+}
+
+
+
+$url = 'https://www.kiyoh.nl/set.php?user='.$kiyoh_user.'&connector='.$kiyoh_connector.'&action='.$kiyoh_action.'&targetMail='.$email.'&delay='.$kiyoh_delay;
+   		
+ 		// create a new cURL resource
+		$curl = curl_init();
+
+		// set URL and other appropriate options
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+
+ 		
+		// grab URL and pass it to the browser
+
+		$response = curl_exec($curl);
+
+		if (curl_errno($curl)) 
+		{
+    		print curl_error($curl);exit;
+		} 
+		else 
+		{
+    		curl_close($curl);
+		}
+// Close handle
+curl_close($curl);
+
+
+
+////call url
+
+
+}
+
+
+ ?>
+ 

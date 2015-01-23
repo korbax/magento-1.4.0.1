@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<config>
+    <tabs>
+        <mynew_tab module="customerreview" translate="label">
+            <label>Customers</label>
+            <sort_order>100</sort_order>
+        </mynew_tab>
+    </tabs>
+    <sections>
+        <customconfig module="customerreview" translate="label">
+            <label>Kiyoh beoordelingen</label>
+            <sort_order>200</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <tab>mynew_tab</tab>
+            <groups>
+                <review_group translate="label">
+                    <label>Customers</label>
+                    <comment>Version 2.1.0.7</comment>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+					  <custom_enable  translate="label">
+                            <label>Enable: </label>
+                            <comment>Source model provider Magento's default Yes/No values</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+							<comment>Recommended Value is Yes. On setting it to NO, module ll stop sending email invites to customers.</comment>
+                        </custom_enable>
+
+                        <custom_connector translate="label tooltip comment">
+                            <label>Enter Connector</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+       <comment>Enter here the Kiyoh Connector Code from your Kiyoh Account.</comment>
+                        </custom_connector>
+                        <custom_action translate="label tooltip comment">
+
+                            <frontend_type>hidden</frontend_type>
+							<sort_order>2</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+
+                        </custom_action>
+						 <custom_user translate="label tooltip comment">
+                            <label>Company Email</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+       <comment>Enter here your "company email address" as registered in your KiyOh account. Not the "user email address"! </comment>
+                        </custom_user>
+						<custom_delay translate="label tooltip comment">
+                            <label>Enter delay</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+       <comment>Enter here the delay(number of days) after which you would like to send review invite email to your customer. This delay applies after customer event(Shipping/Purchase - to be selected at next option). You may enter 0 to send review invite email immediately after customer event(Shipping/Purchase).</comment>
+                        </custom_delay>
+						<custom_event translate="label tooltip comment">
+                            <label>Select Event</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>customerreview_adminhtml/system_config_source_reviewevents</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+       <comment>Enter here the event after which you would like to send review invite email to your customer. Enter Shipping if your store sells products that need shipping. Enter Purchase if your store sells downloadable products(softwares).</comment>
+                        </custom_event>
+                        <custom_event_order_status translate="label">
+                            <label>Order Status</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>customerreview_adminhtml/system_config_source_orderstatus</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><custom_event>Orderstatus</custom_event></depends>
+                       </custom_event_order_status>
+                        <custom_server translate="label tooltip comment">
+                            <label>Select Server</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>customerreview_adminhtml/system_config_source_reviewserver</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </custom_server>
+                        <exclude_customer_groups>
+                            <label>Exclude customer groups</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_customer_group</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </exclude_customer_groups>
+                        <debug_enable  translate="label">
+                            <label>Debug: </label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>Debug file: var/log/kiyoh.log</comment>
+                        </debug_enable>
+                    </fields>
+                </review_group>
+            </groups>
+        </customconfig>
+    </sections>
+</config>

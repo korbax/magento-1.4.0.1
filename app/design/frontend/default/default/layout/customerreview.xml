@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <customerreview_index_index>
+        <reference name="content">
+            <block type="customerreview/customerreview" name="customerreview" template="customerreview/customerreview.phtml" />
+        </reference>
+    </customerreview_index_index>
+	<checkout_onepage_success translate="label">
+         <reference name="content">
+            <block type="checkout/onepage_success" name="checkout.success1" template="kiyohcheckout/success.phtml"/>
+        </reference>
+    </checkout_onepage_success>
+</layout> 

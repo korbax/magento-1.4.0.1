@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @category   Kiyoh
+* @package    Kiyoh_Customerreview
+* @author     ModuleCreator
+* @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+*/
+-->
+<config>
+    <modules>
+        <Kiyoh_Customerreview>
+            <version>2.1.0.7</version>
+        </Kiyoh_Customerreview>
+    </modules>
+    <!--
+    <frontend>
+        <routers>
+            <customerreview>
+                <use>standard</use>
+                <args>
+                    <module>Kiyoh_Customerreview</module>
+                    <frontName>customerreview</frontName>
+                </args>
+            </customerreview>
+        </routers>
+        <layout>
+            <updates>
+                <customerreview>
+                    <file>customerreview.xml</file>
+                </customerreview>
+            </updates>
+        </layout>
+    </frontend>-->
+
+    <!--<adminhtml>
+        <layout>
+            <updates>
+                <customerreview>
+                    <file>customerreview.xml</file>
+                </customerreview>
+            </updates>
+        </layout>
+    </adminhtml>
+    -->
+    <global>
+        <models>
+            <customerreview_adminhtml>
+                <class>Kiyoh_Customerreview_Adminhtml_Model</class>
+            </customerreview_adminhtml>
+
+            <customerreview>
+                <class>Kiyoh_Customerreview_Model</class>
+            </customerreview>
+        </models>
+        <blocks>
+            <customerreview>
+                <class>Kiyoh_Customerreview_Block</class>
+            </customerreview>
+        </blocks>
+        <helpers>
+            <customerreview>
+                <class>Kiyoh_Customerreview_Helper</class>
+            </customerreview>
+        </helpers>
+        <events>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <customerreview>
+                        <type>singleton</type>
+                        <class>Kiyoh_Customerreview_Model_Observer</class>
+                        <method>salesOrderShipmentSaveAfter</method>
+                    </customerreview>
+                </observers>
+            </sales_order_shipment_save_after>
+            <sales_order_place_after>
+                <observers>
+                    <customerreview_payment>
+                        <type>singleton</type>
+                        <class>Kiyoh_Customerreview_Model_Observer</class>
+                        <method>salesOrderPaymentAfter</method>
+                    </customerreview_payment>
+                </observers>
+            </sales_order_place_after>
+            <sales_order_save_after>
+                <observers>
+                    <customerreview_orderstatus_change>
+                        <type>singleton</type>
+                        <class>Kiyoh_Customerreview_Model_Observer</class>
+                        <method>salesOrderSaveAfter</method>
+                    </customerreview_orderstatus_change>
+                </observers>
+            </sales_order_save_after>
+        </events>
+    </global>
+    <default>
+        <customconfig>
+            <review_group>
+                <custom_action>sendInvitation</custom_action>
+                <custom_server>kiyoh.nl</custom_server>
+                <debug_enable>1</debug_enable>
+            </review_group>
+        </customconfig>
+    </default>
+</config>
